@@ -18,5 +18,5 @@ jobs:
         git config --global user.name "[drat bot]"
         git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
         git checkout origin/release
-        git rebase -s ours ${{ github.ref }}
+        git rebase -s theirs ${{ github.ref }}
         git push --tags https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:release
