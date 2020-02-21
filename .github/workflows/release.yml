@@ -1,0 +1,22 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Rebase to release branch
+      run: |
+        git config --global user.name "[drat bot]"
+        git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+        git checkout origin/release
+        git rebase ${{ github.ref }}
+        git push --tags https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:release
